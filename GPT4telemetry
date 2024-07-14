@@ -1,0 +1,56 @@
+@echo off
+
+REM Disable Telemetry and Data Collection Services
+net stop DiagTrack
+sc config DiagTrack start= disabled
+sc stop DiagTrack
+sc config dmwappushservice start= disabled
+sc stop dmwappushservice
+
+REM Disable Telemetry Scheduled Tasks
+schtasks /change /TN "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /disable
+schtasks /change /TN "Microsoft\Windows\Application Experience\ProgramDataUpdater" /disable
+schtasks /change /TN "Microsoft\Windows\Autochk\Proxy" /disable
+schtasks /change /TN "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /disable
+schtasks /change /TN "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /disable
+
+REM Disable Telemetry and Data Collection in Registry
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat" /v AITEnable /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\AppCompat" /v AITEnable /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat\AeInv" /v EnableInventory /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\AppCompat\AeInv" /v EnableInventory /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System\InternetCommunicationManagement\Restrictions" /v DisableShellSearchBoxExperiment /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\System\InternetCommunicationManagement\Restrictions" /v DisableShellSearchBoxExperiment /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableSmartScreen /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\System" /v EnableSmartScreen /t REG_DWORD /d 0 /f
+
+REM Disable Feedback Requests and User Advertising ID
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v DoNotShowFeedbackNotifications /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\DataCollection" /v DoNotShowFeedbackNotifications /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f
+
+REM Disable Location Tracking
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" /v SensorPermissionState /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" /v SensorPermissionState /t REG_DWORD /d 0 /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" /v Status /t REG_DWORD /d 0 /f
+
+REM Disable Cortana and Search Indexing
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v AllowCortana /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v AllowCortana /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v DisableWebSearch /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v DisableIndexingEncryptedItems /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\Windows Search" /v DisableWebSearch /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\Windows Search" /v DisableIndexingEncryptedItems /t REG_DWORD /d 1 /f
+
+REM Disable Error Reporting and Problem Reporting
+reg add "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" /v Disabled /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\Windows Error Reporting" /v Disabled /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\ProblemReports\Configuration" /v AutoGenerate /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\ProblemReports\Configuration" /v AutoGenerate /t REG_DWORD /d 0 /f
+
+REM Disable Wi-Fi Sense and Hotspot Sharing
+reg add "HKLM\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" /v value /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowAutoConnectToWiFiSenseHotspots" /v value /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowAutoConnectToWiFiSenseHotspots" /v value /t REG_DWORD /d 0 /f
